@@ -162,7 +162,7 @@
         // var minDate = moment().format("YYYY-MM-DDThh:mm:ss");
         // elem.min = minDate
 
-        var calendar = $('#calendar').fullCalendar({
+        var calendar = $('#calendar').fullCalendar({ 
             editable: true,
             header:{
                 left: 'prev,next today',
