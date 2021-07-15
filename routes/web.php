@@ -13,19 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/administrator-login', function () {
     return view('auth.login');
 });
 
 Auth::routes();
 
-Route::group(['prefix'=> 'user/', 'middleware' => ['role:user']], function () {
-    Route::get('dashboard', 'UserController@index')->name('user');
+    Route::get('/', 'UserController@index')->name('user');
     Route::get('survey/{id}', 'UserController@evaluate');
+    Route::get('pre-registration/{id}', 'UserController@preRegistration');
+    Route::get('events', 'UserController@eventView')->name('events');
 
     Route::post('submit-feedback', 'UserController@submitFeedback')->name('submit.feedback');
     Route::get('thak-you', 'UserController@tankYou')->name('thankyou');
-});
 
 Route::group(['prefix'=> 'admin/', 'middleware' => ['role:superadministrator']], function () {
     Route::get('dashboard', 'AdminController@index')->name('admin');

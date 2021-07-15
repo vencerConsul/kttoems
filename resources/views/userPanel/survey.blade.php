@@ -20,7 +20,7 @@
                 </button>
             </div>
             @endif
-                <a href="{{route('user')}}" class="btn btn-secondary my-5"><i class="las la-angle-double-left"></i> Back to Homepage</a>
+                <a href="{{route('events')}}" class="btn btn-secondary my-5"><i class="las la-angle-double-left"></i> Back to Events page</a>
                 <h1 class="text-uppercase">{{ $surveys->survey_title }}</h1>
                 <p>Thank you for taking the time to fill in our online feedback form. By providing us your feedback, you are helping us understand what we do well and what improvements we need to implement.</p>
                 <h2>We will send your Certificate on your email after filling up this form</h2>

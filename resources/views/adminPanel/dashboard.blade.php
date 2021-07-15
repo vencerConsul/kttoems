@@ -93,8 +93,8 @@
             <div class="cards">
                 <div class="main__content__card">
                     <div>
-                        <h3>{{ $number_of_users }}</h3>
-                        <span>Users</span>
+                        <h3>9</h3>
+                        <span>Total Visitors</span>
                     </div>
                     <div>
                         <i class="las la-user-friends"></i>
@@ -103,7 +103,7 @@
                 <div class="main__content__card">
                     <div>
                         <h3>{{$evaluate}}</h3>
-                        <span>Total Evaluate</span>
+                        <span>User Evaluate</span>
                     </div>
                     <div>
                         <i class="las la-poll"></i>

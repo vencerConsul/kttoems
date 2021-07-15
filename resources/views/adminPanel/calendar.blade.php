@@ -104,6 +104,8 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form enctype="multipart/form-data" id="event-photo-upload">
+                @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Event title</label>
@@ -122,11 +124,27 @@
                     <label>End of Event</label>
                         <input type="datetime-local" id="event-end" class="form-control" min="2021-07-04">
                     </div>
+                    <div class="form-group">
+                    <label>Choose event color</label>
+                    <br />
+                        <div class="d-flex align-items-center">
+                            <i class="las la-angle-double-down"></i>
+                            <input type="color" id="event-color">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    
+                        <label>Event Photo</label>
+                        <input type="file" id="event-photo" class="d-none">
+                            <br />
+                            <i class="las la-photo-video" onclick="document.getElementById('event-photo').click()"></i>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="eventAdd">Add Event</button>
                 </div>
+                </form>
                 </div>
             </div>
             </div>
@@ -158,9 +176,9 @@
         var today = new Date();
         today.setDate(today.getDate() - 1);
 
-        // elem = document.getElementById("event-end")
-        // var minDate = moment().format("YYYY-MM-DDThh:mm:ss");
-        // elem.min = minDate
+        elem = document.getElementById("event-end")
+        var minDate = moment().format("YYYY-MM-DDThh:mm:ss");
+        elem.min = minDate
 
         var calendar = $('#calendar').fullCalendar({
             editable: true,
@@ -183,9 +201,9 @@
             },
             selectable: true,
             selectHelper: true,
-            // validRange: {
-            //     start: today
-            // },
+            validRange: {
+                start: today
+            },
             select: function (start, end, allDay) {
 
                 
@@ -235,23 +253,32 @@
 
                     let st = moment(start._d).format('YYYY-MM-DD') + ' ' + starttime
                     let en = moment(endEvent).format('YYYY-MM-DD') + ' ' + endtime
+                    
+                    // console.log(title, st, en, $('#event-color').val());
+                    const form = new FormData(document.querySelector("#event-photo-upload"));
 
                     if (title != '' && endEvent != '') {
                         
                         $.ajax({
                             url: SITEURL + "/admin/fullcalenderAjax",
+                            // cache: false,
+                            // contentType: false,
+                            // processData: false,
                             data: {
                                 title: title,
                                 start: st,
                                 end: en,
                                 starttime: st,
                                 endtime: en,
+                                color: $('#event-color').val(),
+                                photo: form,
                                 type: "add"
                             },
                             type: "POST",
                             success: function(data) {
                                 $('#eventModal').modal('hide');
-                                displayMessage("Event Created Successfully, Make a Survey to post it");
+                                // displayMessage("Event Created Successfully, Make a Survey to post it");
+                                // window.location = "{{route('survey')}}"
 
                                 calendar.fullCalendar(
                                     "renderEvent",
@@ -260,6 +287,7 @@
                                         title: title,
                                         start: st,
                                         end: en,
+                                        color: data.color,
                                         allDay: allDay,
                                     },
                                     true

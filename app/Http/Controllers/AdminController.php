@@ -17,10 +17,9 @@ class AdminController extends Controller
     public function index(){
 
         $number_of_events = Event::count();
-        $number_of_users = User::where('name', '!=', 'Superadministrator')->count();
         $number_of_photo = Gallery::count();
         $evaluate = Evaluation::count();
-        return view('adminPanel.dashboard', compact(['number_of_events', 'number_of_users', 'number_of_photo','evaluate']));
+        return view('adminPanel.dashboard', compact(['number_of_events', 'number_of_photo','evaluate']));
     }
 
     // Calerndar
@@ -28,7 +27,7 @@ class AdminController extends Controller
         if($request->ajax()) {
             $data = Event::whereDate('start', '>=', $request->start)
                     ->whereDate('end',   '<=', $request->end)
-                    ->get(['id', 'title', 'start', 'end', 'starttime', 'endtime']);
+                    ->get(['id', 'title', 'start', 'end', 'color']);
 
             return response()->json($data);
         }
@@ -145,13 +144,14 @@ class AdminController extends Controller
     switch ($request->type) {
         
         case 'add':
-            // dd($request->all());
+            dd($request->all());
             $event = Event::create([
                 'title' => $request->title,
                 'start' => $request->start,
                 'end' => $request->end,
                 'starttime' => strtotime($request->starttime),
-                'endtime' => strtotime($request->endtime)
+                'endtime' => strtotime($request->endtime),
+                'color' => $request->color
             ]);
 
             return response()->json($event);

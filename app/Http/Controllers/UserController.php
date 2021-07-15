@@ -15,14 +15,6 @@ class UserController extends Controller
     public function index(){
         $events = Event::orderBy('id', 'desc')->where('event_status', 'done')->orwhere('event_status', 'end')->get();
 
-        date_default_timezone_set('Asia/Manila');   
-        // date and time now
-        $string_dateNow = date('Y-m-d');
-        $string_hourNow = date('H:i');
-        $dateTodal =  $string_dateNow . ' ' . $string_hourNow;
-        // dd(date('Y-m-d').' '.date('H:i:s'));
-        Event::where('endtime', '<=', strtotime($dateTodal))->where('event_status', 'done')->update(['event_status' => 'end']);
-
         $gallery = Gallery::orderBy('id', 'DESC')->get();
         $checkEvent = Event::count();
 
@@ -34,6 +26,13 @@ class UserController extends Controller
         $questions = explode('|',$surveys->survey_questions);
 
         return view('userPanel.survey', compact(['surveys', 'questions']));
+    }
+
+    public function preRegistration($id)
+    {
+        $surveys = Survey::where('event_id',$id)->firstOrFail();
+
+        return 'awd';
     }
 
     public function submitFeedback(Request $request){
@@ -53,7 +52,7 @@ class UserController extends Controller
             'key6' => 'required',
         ]);
 
-        $hasCertificate = Evaluation::where('user_id', auth()->user()->id)->where('survey_id', $request->survey_id)->first();
+        $hasCertificate = Evaluation::where('email', $request->email)->where('survey_id', $request->survey_id)->first();
         if($hasCertificate){
             return redirect()->back()->with('success', 'You already evaluated this event'); 
         }
@@ -111,7 +110,6 @@ class UserController extends Controller
                     'suffix' => $request->suffix,
                     'email' => $request->email,
                     'survey_title' => $request->survey_title,
-                    'user_id' => auth()->user()->id,
                     'survey_id' => $request->survey_id,
                     'key1' => $request->key1,
                     'key2' => $request->key2,
@@ -123,6 +121,21 @@ class UserController extends Controller
                 ]
             );
             return redirect()->route('thankyou');
+    }
+
+    public function eventView(){
+        $events = Event::orderBy('id', 'desc')->where('event_status', 'done')->get();
+        $pastEvents = Event::orderBy('id', 'desc')->where('event_status', 'end')->get();
+
+        date_default_timezone_set('Asia/Manila');   
+        // date and time now
+        $string_dateNow = date('Y-m-d');
+        $string_hourNow = date('H:i');
+        $dateTodal =  $string_dateNow . ' ' . $string_hourNow;
+        // dd(strtotime(date('Y-m-d').' '.date('H:i:s')));
+        Event::where('endtime', '<=', strtotime($dateTodal))->where('event_status', 'done')->update(['event_status' => 'end']);
+
+        return view('userPanel.events', compact(['events', 'pastEvents']));
     }
 
     public function tankYou(){

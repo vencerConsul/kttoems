@@ -15,7 +15,6 @@ class CreateEvaluationsTable extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned();
             $table->integer('survey_id')->unsigned();
             $table->string('survey_title');
             $table->string('firstname');
