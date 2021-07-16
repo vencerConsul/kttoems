@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable =['title', 'start', 'end', 'starttime', 'endtime', 'event_status', 'color'];
+    protected $fillable =['title', 'start', 'end', 'starttime', 'endtime', 'event_status', 'color', 'description'];
 
     public function survey()
     {

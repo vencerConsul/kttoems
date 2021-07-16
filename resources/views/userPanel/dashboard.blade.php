@@ -82,7 +82,7 @@
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                            <img class="d-block w-100 card-img-top img-fluid" src="{{asset('images_folder/uc_background.jpg')}}" alt="First slide">
+                            <img class="d-block w-100 card-img-top img-fluid" src="{{asset('images_folder/empty.png')}}" alt="First slide">
                             </div>
                             <div class="carousel-item">
                             <img class="d-block w-100 card-img-top img-fluid" src="{{asset('images_folder/4.png')}}" alt="Second slide">
@@ -112,51 +112,30 @@
         <div class="col-lg-8">
             <!-- Nested row for non-featured blog posts--> 
             <div class="row">
-                <div class="col-lg-15">
-                    <div class="card mb-4 events" style="background-color: #f0f0f0;">
+                <div class="col-lg-12">
+                    <div class="card events" style="background-color: #f0f0f0;">
                         <div class="card-header"> FEATURED EVENTS</div>
                         @if($events->count() > 0)
-                        <div class="card-body">
                             @foreach ($events as $event)
-                            <img class="img-1" src="{{asset('images_folder/empty.png')}}">
-                            <h2 class="card-title text-capitalize font-weight-bold text-info" >{{$event->title}}</h2>
-                            @if($event->event_status == 'end')
-                            <p class="card-text"><span class="text-success">{{date('F j, Y', strtotime($event->start))}}</span></p>
-
-                            <p>De La Salle University Atty. Christopher E. Cruz imparts Knowledge on IP Management and Technology Transfer to UC Law students and Department Head of Offices.</p>
-                            <p>Discussed topics include: Copyright, Intellectual Property, Technology Transfer, and the role of Universities in Economic-generated Activities. 
-                            </p>
-                            <p>Event has ended</p>
-                            <a class="btn btn-success" href="{{URL::to('user/survey/'.$event->id)}}">Get Certificate</a>
-                            <br>
-                            <hr style="height:1px;color:gray;background-color:gray">
-                            @elseif(strtotime($event->start) <= strtotime(date('Y-m-d') .' '.date('H:i:s')))
-                            <p>Event started</p>
-                            <p class="card-text"><span class="text-success">{{date('F j, Y', strtotime($event->start))}} <span class="text-danger">{{date('h:i A', strtotime($event->start))}}</span></span></p>
-
-                            <p>De La Salle University Atty. Christopher E. Cruz imparts Knowledge on IP Management and Technology Transfer to UC Law students and Department Head of Offices.
-                            <br>
-                            <br>
-                            Discussed topics include: Copyright, Intellectual Property, Technology Transfer, and the role of Universities in Economic-generated Activities. 
-                            </p>
-                            <a class="btn btn-info text-light disabled">Ongoing Event</a>
-                            <br>
-                            <hr style="height:1px;color:gray;background-color:gray">
-                            @else
-                            <p class="card-text">Event will Start on <span class="text-success">{{date('F j, Y', strtotime($event->start))}} <span class="text-danger">{{date('h:i A', strtotime($event->start))}}</span></span> until <span class="text-success">{{date('F j, Y', strtotime($event->end))}} <span class="text-danger">{{date('h:i A', strtotime($event->end))}}</span></span></p>
-
-                            <p>De La Salle University Atty. Christopher E. Cruz imparts Knowledge on IP Management and Technology Transfer to UC Law students and Department Head of Offices.
-                            <br>
-                            <br>
-                            Discussed topics include: Copyright, Intellectual Property, Technology Transfer, and the role of Universities in Economic-generated Activities. 
-                            </p>
-                            <a class="btn btn-secondary disabled">Waiting on Event</a>
-                            <br>
-                            <hr style="height:1px;color:gray;background-color:gray">
-                            @endif
-
+                            <div class="card-body d-flex">
+                                <img src="{{asset('./images_folder/empty.png')}}" alt="" style="width: 300px;">
+                                <div class="p-2">
+                                    <h2 class="card-title text-capitalize font-weight-bold text-info" >{{$event->title}}</h2>
+                                    <p>
+                                        {{$event->description}}
+                                    </p>
+                                    @if($event->event_status == 'end')
+                                    <a class="btn btn-success" href="{{URL::to('user/survey/'.$event->id)}}">Get Certificate</a>
+                                    @elseif(strtotime($event->start) >= strtotime(date('Y-m-d') .' '.date('H:i:s')))
+                                    <a class="btn btn-info text-light disabled">Ongoing Event</a>
+                                    @else
+                                    <p class="card-text">Event will Start on <span class="text-success">{{date('F j, Y', strtotime($event->start))}} <span class="text-danger">{{date('h:i A', strtotime($event->start))}}</span></span> until <span class="text-success">{{date('F j, Y', strtotime($event->end))}} <span class="text-danger">{{date('h:i A', strtotime($event->end))}}</span></span></p>
+                                    <a href="" class="btn btn-secondary disabled">Event waiting</a>
+                                    @endif
+                                </div>
+                            </div>
+                            <hr>
                             @endforeach
-                        </div>
                         @else
                             <h4>Empty Events</h4>
                         @endif

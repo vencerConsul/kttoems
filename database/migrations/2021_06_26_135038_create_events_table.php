@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
             $table->integer('starttime');
             $table->integer('endtime');
             $table->string('color');
+            $table->string('description');
             $table->string('event_status')->default('pending');
             $table->timestamps();
         });

@@ -136,6 +136,7 @@ class AdminController extends Controller
             return redirect()->route('survey');
         }
     }
+    
 
     // full calendar
     public function ajax(Request $request)
@@ -144,14 +145,15 @@ class AdminController extends Controller
     switch ($request->type) {
         
         case 'add':
-            dd($request->all());
+            // dd($request->all());
             $event = Event::create([
                 'title' => $request->title,
                 'start' => $request->start,
                 'end' => $request->end,
                 'starttime' => strtotime($request->starttime),
                 'endtime' => strtotime($request->endtime),
-                'color' => $request->color
+                'color' => $request->color,
+                'description' => $request->description
             ]);
 
             return response()->json($event);

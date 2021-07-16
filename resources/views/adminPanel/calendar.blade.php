@@ -104,8 +104,6 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form enctype="multipart/form-data" id="event-photo-upload">
-                @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Event title</label>
@@ -133,18 +131,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                    
-                        <label>Event Photo</label>
-                        <input type="file" id="event-photo" class="d-none">
-                            <br />
-                            <i class="las la-photo-video" onclick="document.getElementById('event-photo').click()"></i>
-                        </div>
+                    <label>Event Description</label>
+                        <textarea  id="event-description"  rows="5" class="form-control" placeholder="Description"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="eventAdd">Add Event</button>
                 </div>
-                </form>
                 </div>
             </div>
             </div>
@@ -217,6 +211,7 @@
                 document.querySelector('#eventAdd').addEventListener('click', function(){
                     // TITLE EVENT
                     let title = document.querySelector('#event-title').value
+                    let description = document.querySelector('#event-description').value
 
                     // original value of event start time
                     let getStartEventTime = document.getElementById('event-start').value
@@ -254,16 +249,12 @@
                     let st = moment(start._d).format('YYYY-MM-DD') + ' ' + starttime
                     let en = moment(endEvent).format('YYYY-MM-DD') + ' ' + endtime
                     
-                    // console.log(title, st, en, $('#event-color').val());
-                    const form = new FormData(document.querySelector("#event-photo-upload"));
+                    console.log(title, st, en, $('#event-color').val());
 
                     if (title != '' && endEvent != '') {
                         
                         $.ajax({
                             url: SITEURL + "/admin/fullcalenderAjax",
-                            // cache: false,
-                            // contentType: false,
-                            // processData: false,
                             data: {
                                 title: title,
                                 start: st,
@@ -271,13 +262,13 @@
                                 starttime: st,
                                 endtime: en,
                                 color: $('#event-color').val(),
-                                photo: form,
+                                description: description,
                                 type: "add"
                             },
                             type: "POST",
                             success: function(data) {
                                 $('#eventModal').modal('hide');
-                                // displayMessage("Event Created Successfully, Make a Survey to post it");
+                                displayMessage("Event Created Successfully, Make a Survey to post it <a class='btn btn-primary btn-sm' href='{{route('survey')}}'>Make Survey</a> ");
                                 // window.location = "{{route('survey')}}"
 
                                 calendar.fullCalendar(
@@ -347,6 +338,10 @@
         });
     });
         function displayMessage(message) {
+            toastr.options.tapToDismiss = true
+            toastr.options.timeOut = 0
+            toastr.options.extendedTimeOut = 0
+            
             toastr.success(message, 'Event');
         } 
 
